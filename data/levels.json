@@ -1,0 +1,130 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "name": "华强买瓜",
+      "subtitle": "教学 · 近战与廉价人海",
+      "budget": 600,
+      "tip": "贵的单位不一定最优。试试用一只嘎子稳住阵线，再让奶蛙续航。",
+      "enemies": [
+        { "unitId": "melonboss", "count": 2 }
+      ],
+      "waves": [
+        [
+          { "unitId": "melonboss", "count": 1 }
+        ],
+        [
+          { "unitId": "melonboss", "count": 1 }
+        ]
+      ]
+    },
+    {
+      "id": 2,
+      "name": "叮咚鸡",
+      "subtitle": "冲锋破阵 · 后排 AOE",
+      "budget": 800,
+      "tip": "大运可以把敌人撞散，蔡徐坤站在后排会更舒服。",
+      "enemies": [
+        { "unitId": "dagou", "count": 3, "overrides": { "hp": 300, "atk": 20 } }
+      ],
+      "waves": [
+        [
+          { "unitId": "dagou", "count": 2, "overrides": { "hp": 300, "atk": 20 } }
+        ],
+        [
+          { "unitId": "dagou", "count": 1, "overrides": { "hp": 340, "atk": 22 } }
+        ]
+      ]
+    },
+    {
+      "id": 3,
+      "name": "牛来票房",
+      "subtitle": "切后排 · 低费收割",
+      "budget": 1000,
+      "tip": "妙脆角猫优先寻找远程目标；华强负责收拾剩下的企鹅。",
+      "enemies": [
+        { "unitId": "niulai", "count": 1 },
+        { "unitId": "couqie", "count": 4, "overrides": { "hp": 100, "atk": 5 } }
+      ],
+      "waves": [
+        [
+          { "unitId": "niulai", "count": 1 },
+          { "unitId": "couqie", "count": 2, "overrides": { "hp": 100, "atk": 5 } }
+        ],
+        [
+          { "unitId": "couqie", "count": 2, "overrides": { "hp": 120, "atk": 6 } }
+        ]
+      ]
+    },
+    {
+      "id": 4,
+      "name": "抽象乱斗",
+      "subtitle": "混合编队 · 克制链",
+      "budget": 1200,
+      "tip": "嘲讽、AOE、切后排和治疗同时出现，别把所有人堆在一个点。",
+      "enemies": [
+        { "unitId": "dayun", "count": 1 },
+        { "unitId": "gazi", "count": 1 },
+        { "unitId": "naima", "count": 1 },
+        { "unitId": "gugugaga", "count": 2 }
+      ],
+      "waves": [
+        [
+          { "unitId": "dayun", "count": 1 },
+          { "unitId": "gazi", "count": 1 }
+        ],
+        [
+          { "unitId": "naima", "count": 1 },
+          { "unitId": "gugugaga", "count": 2 }
+        ]
+      ]
+    },
+    {
+      "id": 5,
+      "name": "鸡你太美",
+      "subtitle": "高预算 · 廉价刺客解题",
+      "budget": 1500,
+      "tip": "一只大运冲散前排，两只妙脆角猫切蔡徐坤，奶蛙负责把时间买回来。",
+      "enemies": [
+        { "unitId": "caixukun", "count": 2 },
+        { "unitId": "huangsedashu", "count": 3 },
+        { "unitId": "dagou", "count": 1 }
+      ],
+      "waves": [
+        [
+          { "unitId": "caixukun", "count": 2 },
+          { "unitId": "huangsedashu", "count": 1 }
+        ],
+        [
+          { "unitId": "huangsedashu", "count": 2 },
+          { "unitId": "dagou", "count": 1 }
+        ]
+      ]
+    },
+    {
+      "id": 6,
+      "name": "终极抽象",
+      "subtitle": "Boss · 全套豪华阵容",
+      "budget": 2000,
+      "tip": "数量与克制比单张卡面更重要：大运开路，妙脆角猫切后排，牛来与奶蛙补强。",
+      "enemies": [
+        { "unitId": "huaqiang", "count": 1 },
+        { "unitId": "caixukun", "count": 1 },
+        { "unitId": "dayun", "count": 1 },
+        { "unitId": "gazi", "count": 1 },
+        { "unitId": "dagou", "count": 1 }
+      ],
+      "waves": [
+        [
+          { "unitId": "huaqiang", "count": 1 },
+          { "unitId": "caixukun", "count": 1 }
+        ],
+        [
+          { "unitId": "dayun", "count": 1 },
+          { "unitId": "gazi", "count": 1 },
+          { "unitId": "dagou", "count": 1 }
+        ]
+      ]
+    }
+  ]
+}
