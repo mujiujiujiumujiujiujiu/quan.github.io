@@ -1,0 +1,11 @@
+{
+  "name": "meme-war-sim",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check src/main.js && node --check src/sim.js && node --check src/webgl.js && node --check scripts/server.mjs && node --check scripts/launch.mjs && node scripts/check-data.mjs",
+    "start": "node scripts/server.mjs",
+    "dev": "node scripts/server.mjs"
+  }
+}

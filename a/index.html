@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#08111d" />
+    <title>梗战争模拟器 · 原生 WebGL</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="app" class="phase-prep">
+      <header id="topbar">
+        <div class="brand-lockup">
+          <div class="brand-mark">梗</div>
+          <div>
+            <div class="brand-title">梗战争模拟器</div>
+            <div class="brand-subtitle">NATIVE WEBGL / DUDEBUILDER LAB</div>
+          </div>
+        </div>
+
+        <div class="top-stat phase-stat">
+          <span class="stat-kicker">当前阶段</span>
+          <strong id="phaseLabel">准备部署</strong>
+        </div>
+
+        <div class="top-stat budget-stat">
+          <span class="stat-kicker">可用预算</span>
+          <strong><span id="budgetLabel">600</span><small> 金</small></strong>
+        </div>
+
+        <label class="level-picker">
+          <span class="stat-kicker">关卡</span>
+          <select id="levelSelect" aria-label="选择关卡"></select>
+        </label>
+
+        <div class="top-actions">
+          <button id="pauseButton" class="button button-ghost hidden" type="button">暂停</button>
+          <button id="startButton" class="button button-primary" type="button">开始战斗</button>
+          <button id="resetButton" class="button button-ghost" type="button">清空重摆</button>
+        </div>
+      </header>
+
+      <main id="playArea">
+        <section id="battlefieldShell" aria-label="战场">
+          <canvas id="gameCanvas" aria-label="WebGL 战场画布"></canvas>
+          <div id="worldLabels" aria-hidden="true"></div>
+
+          <div id="prepGuide" class="floating-guide">
+            <span class="guide-dot"></span>
+            点击左半场部署单位 · 右键撤回 · 拖拽调整站位
+          </div>
+          <div id="battleGuide" class="floating-guide hidden">
+            <span class="guide-dot guide-dot-battle"></span>
+            自动战斗中 · 清空当前波次后下一波立即入场 · <b>G</b> 慢动作
+          </div>
+          <div id="cameraHint" class="camera-hint">拖拽平移 · 滚轮缩放</div>
+          <div id="webglFallback" class="webgl-fallback hidden">
+            <strong>WebGL2 无法启动</strong>
+            <span>请在浏览器设置中打开硬件加速后刷新页面。</span>
+          </div>
+        </section>
+
+        <aside id="sidePanel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">MISSION BRIEF</span>
+              <h1 id="levelTitle">华强买瓜</h1>
+              <p id="levelSubtitle">教学 · 近战与廉价人海</p>
+            </div>
+            <div id="levelNumber" class="level-number">01</div>
+          </div>
+
+          <div class="tip-card">
+            <span class="tip-icon">✦</span>
+            <p id="levelTip">贵的单位不一定最优。试试用一只嘎子稳住阵线，再让奶蛙续航。</p>
+          </div>
+
+          <div class="battle-readout">
+            <div class="readout-title"><span>战场读数</span><span><b id="waveReadout">共 2 波</b> · <span id="battleClock">00:00</span></span></div>
+            <div class="faction-row">
+              <div class="faction faction-player"><i></i><span>己方</span><strong id="playerCount">0</strong></div>
+              <div class="versus">VS</div>
+              <div class="faction faction-enemy"><i></i><span>敌方</span><strong id="enemyCount">0</strong></div>
+            </div>
+            <div class="progress-track"><span id="battleProgress"></span></div>
+          </div>
+
+          <div class="panel-section">
+            <div class="section-title"><span>战况播报</span><span class="live-dot">LIVE</span></div>
+            <div id="eventLog" class="event-log" aria-live="polite"></div>
+          </div>
+
+          <div class="panel-section controls-section">
+            <div class="section-title"><span>观战控制</span><span id="speedReadout">1×</span></div>
+            <div class="speed-buttons">
+              <button class="speed-button active" data-speed="1" type="button">1×</button>
+              <button class="speed-button" data-speed="2" type="button">2×</button>
+              <button class="speed-button" data-speed="4" type="button">4×</button>
+            </div>
+            <div class="control-note">空格暂停 · G 慢动作 · 拖拽/滚轮移动镜头</div>
+          </div>
+        </aside>
+      </main>
+
+      <section id="unitDock" aria-label="兵种选择栏">
+        <div class="dock-header">
+          <div>
+            <span class="eyebrow">UNIT MARKET</span>
+            <strong>选择单位并放入左侧部署区 · 开战后自动推进多波</strong>
+          </div>
+          <div class="dock-meta"><span id="deployedCount">0</span> / 24 已部署 <span class="divider"></span> 右键可退款</div>
+        </div>
+        <div id="unitList" class="unit-list"></div>
+      </section>
+
+      <div id="resultOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <div id="resultStamp" class="result-stamp">VICTORY</div>
+          <span class="eyebrow">BATTLE REPORT · <span id="resultLevelName">华强买瓜</span></span>
+          <h2 id="resultTitle">胜利</h2>
+          <p id="resultSummary">你的布阵让战场剩下了可以继续讲价的人。</p>
+          <div class="result-stats">
+            <div><span>初始预算</span><strong id="resultInitial">600</strong></div>
+            <div><span>部署花费</span><strong id="resultSpent">0</strong></div>
+            <div><span>击杀奖励</span><strong id="resultBonus">+0</strong></div>
+            <div class="result-remaining"><span>结算剩余</span><strong id="resultRemaining">600</strong></div>
+          </div>
+          <div class="rating-row"><span>省钱评级</span><strong id="resultRating">S</strong><small id="resultRatio">100% 预算留存</small></div>
+          <div class="result-actions">
+            <button id="retryButton" class="button button-ghost" type="button">再来一次</button>
+            <button id="nextButton" class="button button-primary" type="button">下一关</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="toast" class="toast" aria-live="polite"></div>
+      <div id="loading" class="loading-screen"><div class="loader-ring"></div><span>正在加载战场数据…</span></div>
+    </div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
